@@ -12,14 +12,18 @@ namespace ConnectionUControl
     {
         private string connectionString;
         private MySqlConnection conn;
+        // The name of the database that we're actually connected to
+        public string dbName { get; set; }
 
         public Database(string connStr)
         {
             connectionString = connStr;
             conn = null;
+            dbName = "";
         }
 
-        public void openConnection() 
+        // Opens a connection to the specified database
+        public void openConnection(string databaseName) 
         {
             try
             {
@@ -27,6 +31,7 @@ namespace ConnectionUControl
                 {
                     conn = new MySqlConnection(connectionString);
                     conn.Open();
+                    dbName = databaseName;
                 }
                 else
                 {
@@ -35,6 +40,7 @@ namespace ConnectionUControl
                     {
                         conn.Close();
                         conn.Open();
+                        dbName = databaseName;
                     }
                     else
                     {

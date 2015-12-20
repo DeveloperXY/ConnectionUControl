@@ -19,8 +19,7 @@ namespace ConnectionUControl
         public UserControl1()
         {
             InitializeComponent();
-
-            database = new Database("server=localhost;userid=root;password=;database=connControl");
+            connectBtn.Enabled = false;
         }
 
         private void connectBtn_Click(object sender, EventArgs e)
@@ -32,7 +31,21 @@ namespace ConnectionUControl
         {
             try
             {
-                database.openConnection();
+                // Retrieve the database name from the user's input
+                string databaseName = dbTextBox.Text.ToLower();
+
+                if(database != null)
+                {
+                    // Retrieve the name of the database that we're already connected to
+                    string connectedTodb = database.dbName;
+                    if (databaseName.Equals(connectedTodb))
+                        throw new ConnectionAlreadyOpenedException();
+                }
+
+                // Connection to new database, proceed
+                database = new Database("server=localhost;userid=root;password=;database=" + databaseName);
+
+                database.openConnection(databaseName);
                 MessageBox.Show("Connection successful",
                     "Connection successfully established to the database.",
                     MessageBoxButtons.OK,
@@ -40,7 +53,7 @@ namespace ConnectionUControl
             }
             catch (MySqlException ex)
             {
-                 MessageBox.Show("Unable to establish a connection to the database: " + ex.Message,
+                 MessageBox.Show(ex.Message,
                     "Connection to database failed",
                      MessageBoxButtons.OK,
                      MessageBoxIcon.Warning);
@@ -54,11 +67,19 @@ namespace ConnectionUControl
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unable to establish a connection to the database.",
+                MessageBox.Show("Unknow error occured while trying to connect to database.",
                     "Connection to database failed",
                      MessageBoxButtons.OK,
                      MessageBoxIcon.Warning);
             }
+        }
+
+        private void dbTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (dbTextBox.Text == "")
+                connectBtn.Enabled = false;
+            else
+                connectBtn.Enabled = true;
         }
     }
 }
