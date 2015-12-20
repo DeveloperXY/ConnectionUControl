@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Data;
-using Microsoft.VisualBasic;
 
 namespace ConnectionUControl
 {
@@ -20,6 +19,8 @@ namespace ConnectionUControl
         {
             InitializeComponent();
             connectBtn.Enabled = false;
+            dbInputPanel.Visible = false;
+            connectedLabel.Visible = false;
         }
 
         private void connectBtn_Click(object sender, EventArgs e)
@@ -46,10 +47,10 @@ namespace ConnectionUControl
                 database = new Database("server=localhost;userid=root;password=;database=" + databaseName);
 
                 database.openConnection(databaseName);
-                MessageBox.Show("Connection successful",
-                    "Connection successfully established to the database.",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                dbInputPanel.Visible = false;
+                connectLabel.Visible = false;
+                connectedLabel.Text += "\"" + databaseName + "\"";
+                connectedLabel.Visible = true;
             }
             catch (MySqlException ex)
             {
@@ -80,6 +81,11 @@ namespace ConnectionUControl
                 connectBtn.Enabled = false;
             else
                 connectBtn.Enabled = true;
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dbInputPanel.Visible = true;
         }
     }
 }
