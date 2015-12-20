@@ -17,16 +17,31 @@ namespace ConnectionUControl
         {
             connectionString = connStr;
             conn = null;
-
-            openConnection();
         }
 
         public void openConnection() 
         {
             try
             {
-                conn = new MySqlConnection(connectionString);
-                conn.Open();
+                if(conn == null)
+                {
+                    conn = new MySqlConnection(connectionString);
+                    conn.Open();
+                }
+                else
+                {
+                    // If the database is not open, re-open it
+                    if(! isConnectionOpened())
+                    {
+                        conn.Close();
+                        conn.Open();
+                    }
+                    else
+                    {
+                        // Connection is already open
+                        throw new ConnectionAlreadyOpenedException();
+                    }
+                }
             }
             catch (MySqlException ex)
             {
@@ -40,6 +55,19 @@ namespace ConnectionUControl
         {
             if (conn != null)
                 conn.Close();
+        }
+
+        public Boolean isConnectionOpened()
+        {
+            return conn.State == ConnectionState.Open;
+        }
+    }
+
+    class ConnectionAlreadyOpenedException : Exception
+    {
+        public override string ToString()
+        {
+            return "Connection to database is already open.";
         }
     }
 }

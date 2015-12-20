@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using System.Data;
+using Microsoft.VisualBasic;
 
 namespace ConnectionUControl
 {
@@ -22,11 +25,30 @@ namespace ConnectionUControl
 
         private void connectBtn_Click(object sender, EventArgs e)
         {
+            connectToDatabase();
+        }
+
+        public void connectToDatabase()
+        {
             try
             {
                 database.openConnection();
-                MessageBox.Show("Connection successfully established to database.",
-                    "Connection successful",
+                MessageBox.Show("Connection successful",
+                    "Connection successfully established to the database.",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (MySqlException ex)
+            {
+                 MessageBox.Show("Unable to establish a connection to the database: " + ex.Message,
+                    "Connection to database failed",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Warning);
+            }
+            catch(ConnectionAlreadyOpenedException ex)
+            {
+                 MessageBox.Show(ex.ToString(),
+                    "Connection already open",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             }
