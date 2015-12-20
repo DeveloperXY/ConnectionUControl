@@ -21,7 +21,7 @@ namespace ConnectionUControl
             openConnection();
         }
 
-        public void openConnection()
+        public void openConnection() 
         {
             try
             {
@@ -30,7 +30,9 @@ namespace ConnectionUControl
             }
             catch (MySqlException ex)
             {
-                Console.WriteLine(ex.ToString());
+                // Display exception message, then bubble it up to the main container to handle it
+                Console.WriteLine("From the connection control: " + ex.ToString());
+                throw ex;
             }
         }
 
