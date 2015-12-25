@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using System.Data;
 
 namespace ConnectionUControl
 {
@@ -18,6 +17,8 @@ namespace ConnectionUControl
         public UserControl1()
         {
             InitializeComponent();
+
+            // Hide some UI components at startup
             connectBtn.Enabled = false;
             dbInputPanel.Visible = false;
             connectedLabel.Visible = false;
@@ -47,10 +48,15 @@ namespace ConnectionUControl
                 database = new Database("server=localhost;userid=root;password=;database=" + databaseName);
 
                 database.openConnection(databaseName);
+                
+                // UI thing
                 dbInputPanel.Visible = false;
                 connectLabel.Visible = false;
-                connectedLabel.Text += "\"" + databaseName + "\"";
+                connectedLabel.Text =  "Successfully connected to" +
+                    "\"" + databaseName + "\"";
                 connectedLabel.Visible = true;
+
+                populateTablesCombobox();
             }
             catch (MySqlException ex)
             {
@@ -68,11 +74,20 @@ namespace ConnectionUControl
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unknow error occured while trying to connect to database.",
+                MessageBox.Show("Unknow error occured while trying to connect to database. Reason: " + ex.Message,
                     "Connection to database failed",
                      MessageBoxButtons.OK,
                      MessageBoxIcon.Warning);
             }
+        }
+
+        private void populateTablesCombobox()
+        {
+            // Empty the tables' combobox
+            tablesCombobox.Items.Clear();
+
+            tablesCombobox.Items.AddRange(database.getTableNames().ToArray());
+            tablesCombobox.SelectedIndex = 0;
         }
 
         private void dbTextBox_TextChanged(object sender, EventArgs e)
@@ -85,7 +100,20 @@ namespace ConnectionUControl
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            connectedLabel.Visible = false;
             dbInputPanel.Visible = true;
+            connectLabel.Visible = true;
+        }
+
+        private void tablesCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string cmd = "SELECT * FROM " + tablesCombobox.SelectedItem;
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd, database.conn);
+
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            tableDataGrid.DataSource = dt;
         }
     }
 }

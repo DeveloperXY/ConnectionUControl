@@ -11,15 +11,19 @@ namespace ConnectionUControl
     class Database
     {
         private string connectionString;
-        private MySqlConnection conn;
+        public MySqlConnection conn;
         // The name of the database that we're actually connected to
         public string dbName { get; set; }
+
+        // The list of the tables that this database contains
+        private List<string> tables;
 
         public Database(string connStr)
         {
             connectionString = connStr;
             conn = null;
             dbName = "";
+            tables = new List<string>();
         }
 
         // Opens a connection to the specified database
@@ -32,6 +36,7 @@ namespace ConnectionUControl
                     conn = new MySqlConnection(connectionString);
                     conn.Open();
                     dbName = databaseName;
+                    getTables();
                 }
                 else
                 {
@@ -41,6 +46,7 @@ namespace ConnectionUControl
                         conn.Close();
                         conn.Open();
                         dbName = databaseName;
+                        getTables();
                     }
                     else
                     {
@@ -66,6 +72,26 @@ namespace ConnectionUControl
         public Boolean isConnectionOpened()
         {
             return conn.State == ConnectionState.Open;
+        }
+
+        private void getTables()
+        {
+            string cmd = "SHOW TABLES FROM " + dbName;
+            MySqlCommand command = new MySqlCommand(cmd, conn);
+            MySqlDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                tables.Add(reader.GetString(0));
+            }
+
+            reader.Close();
+        }
+
+        // Returns a List<string> of the current database's table names
+        public List<string> getTableNames()
+        {
+            return tables;
         }
     }
 
