@@ -48,6 +48,9 @@
             this.tablesCombobox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.tableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchToTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.tableDataGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -108,7 +111,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.databaseToolStripMenuItem});
+            this.databaseToolStripMenuItem,
+            this.tableToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(677, 24);
@@ -127,14 +131,14 @@
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.connectToolStripMenuItem.Text = "Connect";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
             // 
             // disconnectToolStripMenuItem
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             // 
             // contextMenuStrip1
@@ -220,6 +224,27 @@
             this.panel2.Size = new System.Drawing.Size(376, 32);
             this.panel2.TabIndex = 13;
             // 
+            // tableToolStripMenuItem
+            // 
+            this.tableToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.switchToTableToolStripMenuItem,
+            this.deleteTableToolStripMenuItem});
+            this.tableToolStripMenuItem.Name = "tableToolStripMenuItem";
+            this.tableToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.tableToolStripMenuItem.Text = "Table";
+            // 
+            // deleteTableToolStripMenuItem
+            // 
+            this.deleteTableToolStripMenuItem.Name = "deleteTableToolStripMenuItem";
+            this.deleteTableToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.deleteTableToolStripMenuItem.Text = "Delete table";
+            // 
+            // switchToTableToolStripMenuItem
+            // 
+            this.switchToTableToolStripMenuItem.Name = "switchToTableToolStripMenuItem";
+            this.switchToTableToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.switchToTableToolStripMenuItem.Text = "Switch to table..";
+            // 
             // UserControl1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -268,5 +293,8 @@
         private System.Windows.Forms.ComboBox tablesCombobox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ToolStripMenuItem tableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteTableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem switchToTableToolStripMenuItem;
     }
 }

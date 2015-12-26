@@ -86,8 +86,15 @@ namespace ConnectionUControl
             // Empty the tables' combobox
             tablesCombobox.Items.Clear();
 
-            tablesCombobox.Items.AddRange(database.getTableNames().ToArray());
+            string[] tables = database.getTableNames().ToArray();
+            tablesCombobox.Items.AddRange(tables);
             tablesCombobox.SelectedIndex = 0;
+
+            switchToTableToolStripMenuItem.DropDownItems.Clear();
+            foreach (string table in tables)
+            {
+                switchToTableToolStripMenuItem.DropDownItems.Add(table);
+            }
         }
 
         private void dbTextBox_TextChanged(object sender, EventArgs e)
